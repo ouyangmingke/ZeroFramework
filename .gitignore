@@ -340,3 +340,4 @@ ASALocalRun/
 Logs/
 Migrations/
 nupkg/
+Properties/

@@ -1,12 +1,10 @@
-﻿using DataParser.Domain;
-
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 
 using Zero.Core.Modularity;
 
 namespace Zero.Core.Tests
 {
-    internal class CoreTestModule : ZeroModule
+    public class CoreTestModule : ZeroModule
     {
         public override Task ConfigureServicesAsync(IServiceCollection services)
         {

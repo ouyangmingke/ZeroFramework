@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace DataParser.Domain
+namespace Zero.Core.Modularity
 {
     /// <summary>
     /// 基础模块类

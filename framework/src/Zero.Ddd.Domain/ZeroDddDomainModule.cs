@@ -1,4 +1,4 @@
-﻿using DataParser.Domain;
+﻿using Zero.Core.Modularity;
 
 namespace Zero.Ddd.Domain
 {

@@ -1,11 +1,8 @@
-﻿using DataParser.Domain;
-
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
 using System.Reflection;
-
 using Zero.Core.Modularity;
 
 namespace Microsoft.Extensions.DependencyInjection

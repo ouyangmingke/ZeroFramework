@@ -1,16 +1,18 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Zero.Core.Modularity;
 
-namespace Zero.TestBase
+namespace Zero.TestBase.Testing
 {
     /// <summary>
     /// Zero 单元测试基类
     /// </summary>
-    public abstract class ZeroIntegratedTest : ZeroTestBaseWithServiceProvider
+    public abstract class ZeroIntegratedTest<TStartupModule> : ZeroTestBaseWithServiceProvider
+          where TStartupModule : ZeroModule
     {
         public ZeroIntegratedTest()
         {
             var services = CreateServiceCollection();
-            AddServer(services);
+            services.AddApplication<TStartupModule>();
             ServiceProvider = CreateServiceProvider(services);
         }
 
@@ -18,7 +20,6 @@ namespace Zero.TestBase
         {
             return new ServiceCollection();
         }
-        protected abstract void AddServer(IServiceCollection services);
         protected virtual IServiceProvider CreateServiceProvider(IServiceCollection services)
         {
             return services.BuildServiceProvider();

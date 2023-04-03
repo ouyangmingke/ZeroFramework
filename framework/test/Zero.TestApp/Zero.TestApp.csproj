@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <OutputType>Library</OutputType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Zero.Ddd.Domain\Zero.Ddd.Domain.csproj" />
+    <ProjectReference Include="..\..\src\Zero.TestBase\Zero.TestBase.csproj" />
+  </ItemGroup>
+
+</Project>

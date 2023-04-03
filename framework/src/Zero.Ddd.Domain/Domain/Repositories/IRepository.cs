@@ -4,8 +4,10 @@ using Zero.Ddd.Domain.Entities;
 
 namespace Zero.Ddd.Domain.Repositories
 {
-
-    public interface IRepository<TEntity>
+    public interface IRepository { 
+    
+    }
+    public interface IRepository<TEntity>: IRepository
            where TEntity : class, IEntity
     {
         public Task<TEntity> InsertAsync(TEntity entity, CancellationToken cancellationToken = default);

@@ -1,13 +1,12 @@
-﻿using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Zero.Core.Tests;
-using Zero.TestBase;
+using Zero.TestBase.Testing;
 
 namespace Microsoft.Extensions.DependencyInjection.Tests
 {
     [TestClass()]
-    public class ServiceCollectionApplicationExtensionsTests : ZeroIntegratedTest
+    public class ServiceCollectionApplicationExtensionsTests : ZeroIntegratedTest<CoreTestModule>
     {
         IEnumerable<BaseTestClass> ClassAAA;
         public ServiceCollectionApplicationExtensionsTests()
@@ -32,11 +31,5 @@ namespace Microsoft.Extensions.DependencyInjection.Tests
             //Assert.Fail();
         }
 
-        protected override void AddServer(IServiceCollection services)
-        {
-            services.AddApplication<CoreTestModule3>();
-            services.TryAddSingleton<BaseTestClass, ClassB>();
-
-        }
     }
 }

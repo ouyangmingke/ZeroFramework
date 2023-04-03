@@ -1,9 +1,8 @@
 ﻿using System.Linq.Expressions;
 
 using Zero.Ddd.Domain.Entities;
-using Zero.Ddd.Domain.Repositories;
 
-namespace Zero.Ddd.Domain.Domain.Repositories
+namespace Zero.Ddd.Domain.Repositories
 {
     public abstract class BasicRepositoryBase<TEntity> : IRepository<TEntity>
         where TEntity : class, IEntity
