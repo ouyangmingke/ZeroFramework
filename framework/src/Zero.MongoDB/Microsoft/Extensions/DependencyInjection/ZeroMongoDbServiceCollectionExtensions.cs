@@ -15,6 +15,7 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceCollection AddMongoDbContext<TMongoDbContext>(this IServiceCollection services, Action<IZeroMongoDbContextRegistrationOptionsBuilder> optionsBuilder = null) //Created overload instead of default parameter
             where TMongoDbContext : ZeroMongoDbContext
         {
+            services.AddTransient<TMongoDbContext>();
             var options = new ZeroMongoDbContextRegistrationOptions(typeof(TMongoDbContext), services);
             optionsBuilder?.Invoke(options);
             new MongoDbRepositoryRegistrar(options).AddRepositories();

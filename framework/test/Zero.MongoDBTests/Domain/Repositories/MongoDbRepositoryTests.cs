@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.DataProtection.KeyManagement;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Zero.Ddd.Domain.Repositories;
 using Zero.MongoDBTests;
@@ -57,8 +56,8 @@ namespace Zero.MongoDB.Domain.Repositories.Tests
         {
             try
             {
-                var restaurant = await Repository.GetAsync(t => t.RestaurantId == "2");
-                await Repository.DeleteAsync(restaurant);
+                var restaurants = await Repository.GetListAsync(t => t.RestaurantId == "2");
+                await Repository.DeleteAsync(restaurants.First());
             }
             catch (Exception e)
             {
@@ -72,7 +71,8 @@ namespace Zero.MongoDB.Domain.Repositories.Tests
         {
             try
             {
-                var restaurant = await Repository.GetAsync(t => t.RestaurantId == "2");
+                var restaurants = await Repository.GetListAsync(t => t.RestaurantId == "2");
+                var restaurant = restaurants.First();
                 restaurant.RestaurantId = "3";
                 await Repository.UpdateAsync(restaurant);
             }
@@ -82,5 +82,6 @@ namespace Zero.MongoDB.Domain.Repositories.Tests
                 Assert.Fail();
             }
         }
+
     }
 }

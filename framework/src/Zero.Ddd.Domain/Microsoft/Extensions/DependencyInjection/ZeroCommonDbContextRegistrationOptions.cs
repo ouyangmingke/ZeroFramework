@@ -1,7 +1,5 @@
 ﻿using JetBrains.Annotations;
 
-using Microsoft.Extensions.DependencyInjection;
-
 using Zero.Ddd.Domain.Entities;
 using Zero.Ddd.Domain.Repositories;
 

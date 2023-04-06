@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<Import Project="..\..\..\common.props" />
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="InfluxDB.Client" Version="4.11.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Zero.Data\Zero.Data.csproj" />
+		<ProjectReference Include="..\Zero.Ddd.Domain\Zero.Ddd.Domain.csproj" />
+	</ItemGroup>
+
+</Project>

@@ -1,6 +1,4 @@
-﻿using MongoDB.Bson.Serialization;
-
-namespace Zero.MongoDB.Domain
+﻿namespace Zero.MongoDB.Domain
 {
     public interface IMongoEntityModelBuilder<TEntity>
     {

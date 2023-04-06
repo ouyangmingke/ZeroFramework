@@ -4,21 +4,24 @@ using Zero.Ddd.Domain.Entities;
 
 namespace Zero.Ddd.Domain.Repositories
 {
-    public interface IRepository { 
-    
+    public interface IRepository
+    {
+
     }
-    public interface IRepository<TEntity>: IRepository
+    public interface IRepository<TEntity> : IRepository
            where TEntity : class, IEntity
     {
         public Task<TEntity> InsertAsync(TEntity entity, CancellationToken cancellationToken = default);
         public Task InsertManyAsync(IEnumerable<TEntity> entitys, CancellationToken cancellationToken = default);
-        public Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default);
-        public Task<List<TEntity>> GetListAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default);
+        public Task<IQueryable<TEntity>> GetQueryableAsync();
+        public Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default);
         public Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default);
+        public Task<List<TEntity>> GetListAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default);
         public Task<TEntity> UpdateAsync(TEntity entity, CancellationToken cancellationToken = default);
         public Task UpdateManyAsync(IEnumerable<TEntity> entitys, CancellationToken cancellationToken = default);
+        public Task DeleteAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default);
         public Task DeleteAsync(TEntity entity, CancellationToken cancellationToken = default);
-        public Task DeleteManyAsyncAsync(IEnumerable<TEntity> entitys, CancellationToken cancellationToken = default);
+        public Task DeleteManyAsync(IEnumerable<TEntity> entitys, CancellationToken cancellationToken = default);
     }
 
     /// <summary>

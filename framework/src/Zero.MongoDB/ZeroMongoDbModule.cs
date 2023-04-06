@@ -9,8 +9,9 @@ using Zero.MongoDB.Domain.Repositories;
 
 namespace Zero.MongoDB
 {
-    [DependsOn(typeof(ZeroDataModule))]
-    [DependsOn(typeof(ZeroDddDomainModule))]
+    [DependsOn(
+        typeof(ZeroDataModule),
+        typeof(ZeroDddDomainModule))]
     public class ZeroMongoDbModule : ZeroModule
     {
         public override Task ConfigureServicesAsync(IServiceCollection services)

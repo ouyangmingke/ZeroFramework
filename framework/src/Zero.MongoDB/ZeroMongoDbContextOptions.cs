@@ -1,6 +1,6 @@
 ﻿using MongoDB.Driver;
 
-namespace DataAcquisition.MongoDB
+namespace Zero.MongoDB
 {
     public class ZeroMongoDbContextOptions
     {

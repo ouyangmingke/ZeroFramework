@@ -1,5 +1,3 @@
-using MongoDB.Bson.Serialization;
-
 namespace Zero.MongoDB.Domain;
 
 public class MongoEntityModelBuilder<TEntity> :

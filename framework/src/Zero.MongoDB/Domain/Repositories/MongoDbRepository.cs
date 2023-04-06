@@ -39,15 +39,52 @@ namespace Zero.MongoDB.Domain.Repositories
             var dbContext = await GetDbContextAsync(cancellationToken);
             var collection = dbContext.Collection<TEntity>();
 
-
             return dbContext.SessionHandle != null
                     ? collection.AsQueryable(dbContext.SessionHandle, aggregateOptions)
                     : collection.AsQueryable(aggregateOptions);
 
         }
-        public override Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
+        public override async Task<IQueryable<TEntity>> GetQueryableAsync()
         {
-            throw new NotImplementedException();
+            return await GetMongoQueryableAsync();
+        }
+        public override async Task<TEntity> InsertAsync(TEntity entity, CancellationToken cancellationToken = default)
+        {
+            var dbContext = await GetDbContextAsync(cancellationToken);
+            var collection = dbContext.Collection<TEntity>();
+
+            if (dbContext.SessionHandle != null)
+            {
+                await collection.InsertOneAsync(
+                    dbContext.SessionHandle,
+                entity,
+                    cancellationToken: cancellationToken
+                );
+            }
+            else
+            {
+                await collection.InsertOneAsync(
+                entity,
+                    cancellationToken: cancellationToken
+                );
+            }
+
+            return entity;
+        }
+        public override async Task<TEntity> FindAsync(
+            Expression<Func<TEntity, bool>> predicate,
+            CancellationToken cancellationToken = default)
+        {
+            return (await GetMongoQueryableAsync()).Where(predicate).SingleOrDefault();
+        }
+
+        public override async Task<List<TEntity>> GetListAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
+        {
+            var collection = await GetCollectionAsync(cancellationToken);
+
+            var documents = await collection.FindAsync(predicate);
+            return await documents.ToListAsync();
+
         }
 
         public override async Task DeleteAsync(TEntity entity, CancellationToken cancellationToken = default)
@@ -105,49 +142,6 @@ namespace Zero.MongoDB.Domain.Repositories
             }
         }
 
-        public override async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
-        {
-            var queryable = await GetMongoQueryableAsync();
-            var entity = await queryable.Where(predicate).FirstOrDefaultAsync();
-            if (entity == null)
-            {
-                //throw new EntityNotFoundException(typeof(TEntity), id);
-            }
-            return entity;
-        }
-
-        public override async Task<List<TEntity>> GetListAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
-        {
-            var collection = await GetCollectionAsync(cancellationToken);
-
-            var documents = await collection.FindAsync(predicate);
-            return await documents.ToListAsync();
-
-        }
-
-        public override async Task<TEntity> InsertAsync(TEntity entity, CancellationToken cancellationToken = default)
-        {
-            var dbContext = await GetDbContextAsync(cancellationToken);
-            var collection = dbContext.Collection<TEntity>();
-
-            if (dbContext.SessionHandle != null)
-            {
-                await collection.InsertOneAsync(
-                    dbContext.SessionHandle,
-                entity,
-                    cancellationToken: cancellationToken
-                );
-            }
-            else
-            {
-                await collection.InsertOneAsync(
-                entity,
-                    cancellationToken: cancellationToken
-                );
-            }
-
-            return entity;
-        }
         public override async Task<TEntity> UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)
         {
             var dbContext = await GetDbContextAsync(cancellationToken);
@@ -199,6 +193,7 @@ namespace Zero.MongoDB.Domain.Repositories
         {
             throw new Exception("Database operation expected to affect 1 row but actually affected 0 row. Data may have been modified or deleted since entities were loaded. This exception has been thrown on optimistic concurrency check.");
         }
+
     }
 
     public class MongoDbRepository<TMongoDbContext, TEntity, TKey> : MongoDbRepository<TMongoDbContext, TEntity>

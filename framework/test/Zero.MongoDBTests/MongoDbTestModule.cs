@@ -13,13 +13,12 @@ namespace Zero.MongoDBTests
     {
         public override Task ConfigureServicesAsync(IServiceCollection services)
         {
-            services.AddTransient<TestAppMongoDBDbContext>();
             services.AddMongoDbContext<TestAppMongoDBDbContext>(option =>
             {
                 option.AddDefaultRepositories();
                 //option.AddRepository<Restaurant, RestaurantRepository>();
             });
-            services.AddOptions<ZeroDbConnectionOptions>().Configure(t =>
+            services.Configure<ZeroDbConnectionOptions>(t =>
             t.ConnectionStrings.Default = "mongodb://127.0.0.1:27017/"
             );
             return base.ConfigureServicesAsync(services);
