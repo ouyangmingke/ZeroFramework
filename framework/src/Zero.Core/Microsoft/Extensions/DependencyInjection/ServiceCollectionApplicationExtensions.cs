@@ -1,7 +1,10 @@
 ﻿using JetBrains.Annotations;
 
+using Microsoft.Extensions.Configuration;
+
 using System.Reflection;
 
+using Zero;
 using Zero.Bundling;
 using Zero.Core.Modularity;
 
@@ -10,10 +13,29 @@ namespace Microsoft.Extensions.DependencyInjection
     public static class ServiceCollectionApplicationExtensions
     {
         static readonly List<BundleTypeDefinition> moduleTypes = new() { };
+
+        /// <summary>
+        /// 添加启动应用模块
+        /// </summary>
+        /// <typeparam name="TStartupModule"></typeparam>
+        /// <param name="services"></param>
+        /// <param name="optionsAction">创建应用基础配置</param>
+        /// <returns></returns>
         public static IServiceCollection AddApplication<TStartupModule>(
-            [NotNull] this IServiceCollection services)
-            where TStartupModule : ZeroModule
+            [NotNull] this IServiceCollection services,
+            Action<ZeroApplicationCreationOptions>? optionsAction = null)
         {
+            if (!services.IsAdded<IConfiguration>())
+            {
+                var applicationCreationOptions = new ZeroApplicationCreationOptions();
+                optionsAction?.Invoke(applicationCreationOptions);
+
+                services.ReplaceConfiguration(
+                    ConfigurationHelper.BuildConfiguration(
+                        applicationCreationOptions.Configuration
+                    )
+                );
+            }
 
             FindBundleContributorsRecursively(typeof(TStartupModule), 0, moduleTypes);
 

@@ -12,7 +12,7 @@ namespace Zero.TestBase.Testing
         public ZeroIntegratedTest()
         {
             var services = CreateServiceCollection();
-            services.AddApplication<TStartupModule>();
+            services.AddApplication<TStartupModule>(SetZeroApplicationCreationOptions);
             ServiceProvider = CreateServiceProvider(services);
         }
 
@@ -23,6 +23,10 @@ namespace Zero.TestBase.Testing
         protected virtual IServiceProvider CreateServiceProvider(IServiceCollection services)
         {
             return services.BuildServiceProvider();
+        }
+        protected virtual void SetZeroApplicationCreationOptions(ZeroApplicationCreationOptions options)
+        {
+
         }
     }
 }
