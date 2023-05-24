@@ -6,29 +6,20 @@ using Zero.TestBase.Testing;
 namespace Microsoft.Extensions.DependencyInjection.Tests
 {
     [TestClass()]
-    public class ServiceCollectionApplicationExtensionsTests : ZeroIntegratedTest<CoreTestModule>
+    public class ServiceCollectionApplicationExtensionsTests : ZeroIntegratedTest<CoreTestModule3>
     {
-        IEnumerable<BaseTestClass> ClassAAA;
+        IEnumerable<BaseTestClass> BaseTestClasss;
         public ServiceCollectionApplicationExtensionsTests()
         {
-            try
-            {
-                ClassAAA = GetRequiredService<IEnumerable<BaseTestClass>>();
-            }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
+            BaseTestClasss = GetRequiredService<IEnumerable<BaseTestClass>>();
         }
         [TestMethod()]
         public void AddApplicationTest()
         {
-          foreach (var service in ClassAAA)
+            foreach (var service in BaseTestClasss)
             {
                 Console.WriteLine(service.CurrentType()); ;
             }
-            //Assert.Fail();
         }
 
     }

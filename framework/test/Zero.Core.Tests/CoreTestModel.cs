@@ -13,8 +13,8 @@ namespace Zero.Core.Tests
         }
     }
 
-    [DependsOn(typeof(CoreTestModule), typeof(CoreTestModule))]
-    internal class CoreTestModule1 : ZeroModule
+    [DependsOn(typeof(CoreTestModule))]
+    public class CoreTestModule1 : ZeroModule
     {
         public override Task ConfigureServicesAsync(IServiceCollection services)
         {
@@ -24,7 +24,7 @@ namespace Zero.Core.Tests
     }
 
     [DependsOn(typeof(CoreTestModule1))]
-    internal class CoreTestModule2 : ZeroModule
+    public class CoreTestModule2 : ZeroModule
     {
         public override Task ConfigureServicesAsync(IServiceCollection services)
         {
@@ -33,9 +33,8 @@ namespace Zero.Core.Tests
     }
 
     [DependsOn(
-        typeof(CoreTestModule1),
         typeof(CoreTestModule2))]
-    internal class CoreTestModule3 : ZeroModule
+    public class CoreTestModule3 : ZeroModule
     {
         public override Task ConfigureServicesAsync(IServiceCollection services)
         {

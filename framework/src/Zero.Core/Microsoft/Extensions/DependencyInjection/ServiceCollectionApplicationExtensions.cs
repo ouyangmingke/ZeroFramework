@@ -1,24 +1,26 @@
 ﻿using JetBrains.Annotations;
 
-using Microsoft.Extensions.DependencyInjection.Extensions;
-
 using System.Reflection;
+
+using Zero.Bundling;
 using Zero.Core.Modularity;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
     public static class ServiceCollectionApplicationExtensions
     {
-        static readonly List<Type> moduleTypes = new() { };
+        static readonly List<BundleTypeDefinition> moduleTypes = new() { };
         public static IServiceCollection AddApplication<TStartupModule>(
             [NotNull] this IServiceCollection services)
             where TStartupModule : ZeroModule
         {
 
-            FindBundleContributorsRecursively(typeof(TStartupModule), moduleTypes);
+            FindBundleContributorsRecursively(typeof(TStartupModule), 0, moduleTypes);
 
-            foreach (var item in moduleTypes)
-                services.AddSingleton(typeof(ZeroModule), item);
+            foreach (var module in moduleTypes.OrderByDescending(t => t.Level))
+            {
+                services.AddSingleton(typeof(ZeroModule), module.BundleContributorType);
+            }
             var serviceProvider = services.BuildServiceProvider();
 
             var modules = serviceProvider.GetRequiredService<IEnumerable<ZeroModule>>();
@@ -32,19 +34,26 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <summary>
         /// 递归获取全部模块
         /// </summary>
-        /// <param name="type"></param>
-        /// <param name="models"></param>
+        /// <param name="module"></param>
+        /// <param name="moduls"></param>
         /// <returns></returns>
-        public static void FindBundleContributorsRecursively(Type type, List<Type> models)
+        private static void FindBundleContributorsRecursively(Type module, int level, List<BundleTypeDefinition> moduls)
         {
-            if (models.Any(t => t.FullName == type.FullName))
-                return;
-            models.Add(type);
+            var definition = moduls.FirstOrDefault(t => t.BundleContributorType.FullName == module.FullName);
+            if (definition != null)
+            {
+                definition.Level = level;
+            }
+            else
+            {
+                moduls.Add(new BundleTypeDefinition { Level = level, BundleContributorType = module });
+            }
             // 取出关联模块属性
-            var dependedTypes = type.GetCustomAttributes().OfType<IDependedTypesProvider>().ToList();
+            var dependedTypes = module.GetCustomAttributes().OfType<IDependedTypesProvider>();
+
             // 取出属性中的模块 Type
-            foreach (var item in dependedTypes.SelectMany(t => t.GetDependedTypes()).ToList())
-                FindBundleContributorsRecursively(item, models);
+            foreach (var item in dependedTypes.SelectMany(t => t.GetDependedTypes()))
+                FindBundleContributorsRecursively(item, ++level, moduls);
         }
     }
 }

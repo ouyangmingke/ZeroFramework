@@ -1,6 +1,7 @@
 ﻿using System.Linq.Expressions;
 
 using Zero.Ddd.Domain.Entities;
+using Zero.ExceptionHandling.Domain.Entities;
 
 namespace Zero.Ddd.Domain.Repositories
 {
@@ -22,7 +23,7 @@ namespace Zero.Ddd.Domain.Repositories
             var entity = await FindAsync(predicate, cancellationToken);
             if (entity == null)
             {
-                throw new Exception(typeof(TEntity).FullName);
+                throw new EntityNotFoundException(typeof(TEntity).FullName);
             }
             return entity;
         }

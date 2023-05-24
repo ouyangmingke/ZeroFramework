@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-namespace Zero.Core.Modularity;
+﻿namespace Zero.Core.Modularity;
 
 public interface IDependedTypesProvider
 {
